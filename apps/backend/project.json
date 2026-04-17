@@ -5,14 +5,18 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/backend",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
         "assets": ["apps/backend/src/assets"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "target": "node",
+        "format": ["cjs"],
+        "bundle": true,
+        "platform": "node",
+        "generatePackageJson": true
       }
     },
     "serve": {
@@ -21,14 +25,6 @@
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "backend:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "backend:build:development"
-        },
-        "production": {
-          "buildTarget": "backend:build:production"
-        }
       }
     },
     "lint": {

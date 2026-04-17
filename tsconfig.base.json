@@ -15,6 +15,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "@saraha/dto": ["libs/dto/src/index.ts"],
       "@saraha/utils": ["libs/utils/src/index.ts"],
