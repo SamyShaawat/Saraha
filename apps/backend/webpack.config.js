@@ -2,6 +2,7 @@ const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join } = require('path');
 
 module.exports = {
+  context: __dirname, // CRITICAL: Fixes the relative path resolution issue
   output: {
     path: join(__dirname, '../../dist/apps/backend'),
   },
@@ -9,9 +10,9 @@ module.exports = {
     new NxAppWebpackPlugin({
       target: 'node',
       compiler: 'tsc',
-      main: join(__dirname, 'src/main.ts'),
-      tsConfig: join(__dirname, 'tsconfig.app.json'),
-      assets: [join(__dirname, 'src/assets')],
+      main: './src/main.ts',
+      tsConfig: './tsconfig.app.json',
+      assets: ['./src/assets'],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,
