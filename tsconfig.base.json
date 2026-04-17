@@ -1,0 +1,26 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ES2021",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["ES2021"],
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@saraha/dto": ["libs/dto/src/index.ts"],
+      "@saraha/utils": ["libs/utils/src/index.ts"],
+      "@saraha/data-access": ["libs/data-access/src/index.ts"],
+      "@app/*": ["apps/backend/src/app/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "tmp"]
+}

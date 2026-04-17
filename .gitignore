@@ -3,3 +3,14 @@
 node_modules/*
 CLAUDE.md
 .claude/*
+
+
+node_modules
+.vscode
+.nx
+.nx/cache
+.nx/workspace-data
+vite.config.*.timestamp*
+
+.env
+dist
