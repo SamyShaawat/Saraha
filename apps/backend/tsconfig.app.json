@@ -9,8 +9,7 @@
     "emitDecoratorMetadata": true,
     "target": "ES2021",
     "strict": true,
-    "esModuleInterop": true,
-    "rootDir": "../../"
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.ts", "../../libs/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }
