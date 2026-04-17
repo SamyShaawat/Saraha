@@ -1,2 +1,5 @@
-./config/.env.development
-./config/.env.production
+/config/.env.development
+/config/.env.production
+CLAUDE.md
+.claude/*
+.claude
