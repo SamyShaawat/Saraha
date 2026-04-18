@@ -1,6 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Navbar() {
+  const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('accessToken');
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <nav style={{ 
       display: 'flex', 
@@ -25,10 +33,18 @@ export function Navbar() {
       
       <ul style={{ display: 'flex', gap: '2rem', alignItems: 'center', margin: 0, padding: 0 }}>
         <li><Link to="/contact" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>Contact Us</Link></li>
-        <li><a href="#" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>English</a></li>
         <li style={{ display: 'flex', gap: '1rem' }}>
-          <Link to="/login" className="btn btn-glass" style={{ textDecoration: 'none' }}>Login</Link>
-          <Link to="/register" className="btn btn-primary" style={{ textDecoration: 'none' }}>Register</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard" className="btn btn-primary" style={{ textDecoration: 'none' }}>Dashboard</Link>
+              <button onClick={handleLogout} className="btn btn-glass" style={{ cursor: 'pointer' }}>Logout</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-glass" style={{ textDecoration: 'none' }}>Login</Link>
+              <Link to="/register" className="btn btn-primary" style={{ textDecoration: 'none' }}>Register</Link>
+            </>
+          )}
         </li>
       </ul>
     </nav>
