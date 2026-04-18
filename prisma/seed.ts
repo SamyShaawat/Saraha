@@ -12,6 +12,7 @@ async function main() {
     update: {},
     create: {
       email: 'admin@saraha.com',
+      username: 'admin',
       firstName: 'System',
       lastName: 'Admin',
       password,
@@ -25,6 +26,7 @@ async function main() {
     update: {},
     create: {
       email: 'jane.doe@example.com',
+      username: 'jane_doe',
       firstName: 'Jane',
       lastName: 'Doe',
       password: userPassword,
@@ -39,6 +41,7 @@ async function main() {
     update: {},
     create: {
       email: 'john.smith@example.com',
+      username: 'john_smith',
       firstName: 'John',
       lastName: 'Smith',
       password: userPassword,
@@ -53,6 +56,7 @@ async function main() {
     update: {},
     create: {
       email: 'test.user@example.com',
+      username: 'test_user',
       firstName: 'Test',
       lastName: 'User',
       password: userPassword,
@@ -62,11 +66,48 @@ async function main() {
     },
   });
 
-  console.log('Seed executed properly! Fixture users generated:');
-  console.log(`- ${admin.firstName} ${admin.lastName} (${admin.email})`);
-  console.log(`- ${activeUser.firstName} ${activeUser.lastName} (${activeUser.email})`);
-  console.log(`- ${pendingUser.firstName} ${pendingUser.lastName} (${pendingUser.email})`);
-  console.log(`- ${testUser.firstName} ${testUser.lastName} (${testUser.email})`);
+  // Create some sample messages for the test user
+  await prisma.message.createMany({
+    data: [
+      {
+        content: 'I really like your work ethic! Keep it up.',
+        receiverId: testUser.id,
+        isFavorite: true,
+        isPublic: true,
+      },
+      {
+        content: 'You should try to be more active in the community.',
+        receiverId: testUser.id,
+        isFavorite: false,
+        isPublic: false,
+      },
+      {
+        content: 'Thanks for the help yesterday! You are a life saver.',
+        receiverId: testUser.id,
+        isFavorite: true,
+        isPublic: false,
+      },
+      {
+        content: 'Have you considered learning NestJS? It is awesome!',
+        receiverId: testUser.id,
+        isFavorite: false,
+        isPublic: true,
+      },
+      {
+        content: 'Anonymous feedback is so cool, right?',
+        receiverId: testUser.id,
+        isFavorite: false,
+        isPublic: false,
+      },
+    ],
+  });
+
+  console.log('Seed executed properly! Fixtures generated:');
+  console.log(`- Admin: @${admin.username} (${admin.email})`);
+  console.log(`- User: @${activeUser.username} (${activeUser.email})`);
+  console.log(`- User: @${pendingUser.username} (${pendingUser.email})`);
+  console.log(`- User: @${testUser.username} (${testUser.email})`);
+  console.log(`- Generated 5 sample messages for @${testUser.username}`);
 }
 
 main()

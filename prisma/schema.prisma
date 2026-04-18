@@ -11,9 +11,11 @@ model User {
   id                    String    @id @default(uuid())
   firstName             String
   lastName              String
+  username              String    @unique
   email                 String    @unique
   password              String?
   phone                 String?
+  bio                   String?
   provider              Int       @default(0)
   role                  Int       @default(0)
   gender                Int       @default(1)
@@ -23,6 +25,21 @@ model User {
   changeCredentialsTime DateTime?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  receivedMessages      Message[] @relation("ReceivedMessages")
 
   @@map("Route_Users")
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  content     String   // Should limit to ~500 chars in DTO
+  isFavorite  Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  ipAddress   String?  // For rate limiting / abuse tracking
+  createdAt   DateTime @default(now())
+  
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId  String
+
+  @@map("Route_Messages")
 }
