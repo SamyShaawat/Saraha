@@ -1,60 +1,130 @@
-# Saraha
+# 🌿 Saraha - Anonymous Messaging Platform
 
-Saraha is a modern anonymous messaging web application that enables users to receive open and honest feedback from friends, family, and colleagues in a private and secure manner.
+[![Nx](https://img.shields.io/badge/Nx-Monorepo-blueviolet?style=flat-square&logo=nx)](https://nx.dev)
+[![NestJS](https://img.shields.io/badge/NestJS-Framework-red?style=flat-square&logo=nestjs)](https://nestjs.com)
+[![React](https://img.shields.io/badge/React-UI-blue?style=flat-square&logo=react)](https://reactjs.org)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)](https://prisma.io)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
 
-## 🚀 Technology Stack
+**Saraha** is a premium, modern anonymous messaging application designed for honest feedback and private communication. Built with a robust full-stack architecture, it offers a seamless and secure experience for users to connect and share insights.
 
-This repository is structured as an [Nx workspace](https://nx.dev) monorepo.
+---
 
-*   **Frontend framework**: React (Next.js/Vite integrated via Nx)
-*   **Backend framework**: NestJS
-*   **Database ORM**: Prisma Client
-*   **Database Engine**: PostgreSQL
-*   **Package Manager**: pnpm
+## ✨ Features
 
-## 📁 Repository Structure
+- **🔒 Privacy First**: Secure, anonymous messaging with encrypted identity workflows.
+- **🎨 Modern UI/UX**: Stunning frontend with glassmorphism aesthetics and responsive design.
+- **🏗 Monorepo Architecture**: Managed by Nx for efficient builds and shared library management.
+- **🛡 Type-Safe**: Shared DTOs and utilities ensure end-to-end type safety between Backend and Frontend.
+- **🔑 Secure Auth**: JWT-based authentication with Argon2 password hashing and Google Social Auth support.
+- **📊 Database Management**: High-performance PostgreSQL with Prisma ORM and automated seeding.
 
-*   `/apps/frontend`: Web application client interface featuring modern glassmorphism aesthetics.
-*   `/apps/backend`: Central NestJS server managing user authentication, sessions, and Prisma database synchronization.
-*   `/libs`: Shared architectural boundaries and packages (DTOs, Data Access repositories, Utility functions).
-*   `/prisma`: Database schema layout and TypeScript-based `seed.ts` migration fixtures.
+---
 
-## 💻 Setup and Usage
+## 🛠 Technology Stack
 
-Before you begin, ensure you have an active PostgreSQL service running locally or in Docker.
+| Layer | Technology |
+| :--- | :--- |
+| **Monorepo** | [Nx](https://nx.dev) |
+| **Frontend** | [React](https://reactjs.org), [Vite](https://vitejs.dev), [React Router](https://reactrouter.com) |
+| **Backend** | [NestJS](https://nestjs.com), [Express](https://expressjs.com) |
+| **Database** | [PostgreSQL](https://www.postgresql.org), [Prisma](https://www.prisma.io) |
+| **Security** | JWT, Argon2, [google-auth-library](https://www.npmjs.com/package/google-auth-library) |
+| **Tooling** | [pnpm](https://pnpm.io), ESLint, Prettier, Jest |
 
-1. **Install dependencies:**
+---
+
+## 📁 Project Structure
+
+```bash
+Saraha/
+├── apps/
+│   ├── frontend/         # React SPA (Vite-based)
+│   ├── backend/          # NestJS API Server
+│   └── backend-e2e/      # End-to-end testing suite
+├── libs/
+│   ├── dto/              # Shared Data Transfer Objects
+│   └── utils/            # Shared utilities and constants
+├── prisma/               # Database schema and seed scripts
+└── package.json          # Workspace dependencies and scripts
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [pnpm](https://pnpm.io/)
+- [PostgreSQL](https://www.postgresql.org/) instance
+
+### Configuration
+
+Create a `.env` file in the root directory and configure the following:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/saraha_db?schema=public"
+
+# Server
+PORT=3008
+
+# Security
+JWT_SECRET="your-access-token-secret"
+REFRESH_TOKEN_SECRET="your-refresh-token-secret"
+JWT_EXPIRE="1h"
+REFRESH_TOKEN_EXPIRE="7d"
+
+# Social Auth (Optional)
+GOOGLE_CLIENT_ID="your-google-client-id"
+```
+
+### Installation
+
+1. **Clone and Install:**
    ```bash
    pnpm install
    ```
 
-2. **Configure Database Schema:**
-   *(Ensure you have setup your `.env` with a `DATABASE_URL`)*
+2. **Database Setup:**
    ```bash
    pnpm exec prisma db push
+   pnpm run prisma:seed
    ```
 
-3. **Populate Mock Seed Data:**
+3. **Run Services:**
+   
+   **Development Mode (Frontend + Backend):**
    ```bash
-   pnpm exec prisma db seed
-   # Generates test users such as jane.doe@example.com
+   pnpm run dev
    ```
+   
+   **Individual Services:**
+   - **Frontend:** `pnpm run dev:frontend` (http://localhost:4208)
+   - **Backend:** `pnpm run dev:backend` (http://localhost:3008)
 
-4. **Launch Backend Service:**
-   ```bash
-   pnpm nx serve backend
-   ```
-   *(Running locally on http://localhost:3000/api)*
+---
 
-5. **Launch Frontend Service:**
-   ```bash
-   pnpm nx serve frontend
-   ```
-   *(Running locally on http://localhost:4200)*
+## 📜 Available Scripts
 
-## 🛠 Features Included
+| Task | Command |
+| :--- | :--- |
+| **Start All** | `pnpm run dev` |
+| **Build Project** | `pnpm run build` |
+| **Run Tests** | `pnpm run test` |
+| **Linting** | `pnpm run lint` |
+| **Prisma Studio** | `pnpm run prisma:studio` |
+| **Prisma Migrate** | `pnpm run prisma:migrate` |
 
-*   Complete `libs/` boundary scaffolding to prevent circular dependency conflicts.
-*   Type-safe endpoints ensuring backend logic syncs explicitly with identical React models.
-*   Nx Executor optimized builds, with fixed configurations to properly watch Webpack cycles.
-*   JWT and Argon2 Hash encrypted identity workflows.
+---
+
+## 🛡 License
+
+This project is licensed under the **ISC License**.
+
+---
+
+<p align="center">
+  Built with ❤️ for a better feedback culture.
+</p>
