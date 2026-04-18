@@ -21,7 +21,7 @@
   "license": "ISC",
   "description": "Saraha – anonymous message platform (NestJS + React + PostgreSQL)",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "pnpm run prisma:seed"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
