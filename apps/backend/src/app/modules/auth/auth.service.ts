@@ -28,7 +28,16 @@ export class AuthService {
 
     const user = await this.prisma.user.create({
       data: { email, firstName, lastName, username, password: hashedPassword },
-      select: { id: true, email: true, username: true, firstName: true, lastName: true, role: true, createdAt: true },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        preferredLanguage: true,
+        createdAt: true,
+      },
     });
 
     this.logger.log(`User created: ${user.username} (${user.id})`);
@@ -63,6 +72,7 @@ export class AuthService {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
+        preferredLanguage: user.preferredLanguage,
       },
       ...tokens,
     };
@@ -161,6 +171,7 @@ export class AuthService {
     firstName: string;
     lastName: string;
     role: number;
+    preferredLanguage?: string;
   }) {
     const tokens = this.createTokens(user);
     const response = {
@@ -170,6 +181,7 @@ export class AuthService {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
+        preferredLanguage: user.preferredLanguage,
       },
       ...tokens,
     };

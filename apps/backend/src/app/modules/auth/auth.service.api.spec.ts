@@ -17,6 +17,7 @@ type UserFixture = {
   lastName: string;
   role: number;
   provider: number;
+  preferredLanguage?: string;
   createdAt: Date;
 };
 
@@ -202,6 +203,7 @@ describe('AuthService', () => {
       // Assert
       expect(result).toHaveProperty('accessToken');
       expect(result.user.username).toBe('u');
+      expect(result.user.preferredLanguage).toBeUndefined();
     });
   });
 
