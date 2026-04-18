@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function Navbar() {
   return (
     <nav style={{ 
@@ -16,15 +18,17 @@ export function Navbar() {
       WebkitBackdropFilter: 'blur(12px)'
     }}>
       <div style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-        <span className="gradient-text">Saraha</span>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+           <span className="gradient-text">Saraha</span>
+        </Link>
       </div>
       
       <ul style={{ display: 'flex', gap: '2rem', alignItems: 'center', margin: 0, padding: 0 }}>
-        <li><a href="#" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>Contact Us</a></li>
+        <li><Link to="/contact" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>Contact Us</Link></li>
         <li><a href="#" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>English</a></li>
         <li style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-glass">Login</button>
-          <button className="btn btn-primary">Register</button>
+          <Link to="/login" className="btn btn-glass" style={{ textDecoration: 'none' }}>Login</Link>
+          <Link to="/register" className="btn btn-primary" style={{ textDecoration: 'none' }}>Register</Link>
         </li>
       </ul>
     </nav>
