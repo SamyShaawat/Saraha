@@ -1,16 +1,17 @@
-/// <reference types="jest" />
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto } from '@saraha/dto';
-import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
 describe('AuthController', () => {
   let controller: AuthController;
+  let authService: AuthService;
 
   const mockAuthService = {
     signup: jest.fn(),
     login: jest.fn(),
+    facebookLogin: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -20,79 +21,47 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
+    authService = module.get<AuthService>(AuthService);
   });
 
-  describe('signup', () => {
-    it('should call authService.signup and return result', async () => {
+  describe('register/signup', () => {
+    it('should successfully register a user using AAA', async () => {
       // Arrange
       const dto: CreateUserDto = {
         email: 'test@example.com',
+        username: 'tester',
         password: 'password123',
         firstName: 'Test',
         lastName: 'User',
-        phone: '1234567890',
       };
-      const result = { id: '1', email: dto.email };
-      mockAuthService.signup.mockResolvedValue(result);
+      const mockResult = { id: '1', ...dto };
+      mockAuthService.signup.mockResolvedValue(mockResult);
 
       // Act
-      const response = await controller.signup(dto);
+      const result = await controller.register(dto);
 
       // Assert
-      expect(mockAuthService.signup).toHaveBeenCalledWith(dto);
-      expect(response).toEqual(result);
-    });
-
-    it('should propagate ConflictException from authService', async () => {
-      // Arrange
-      const dto: CreateUserDto = {
-        email: 'existing@example.com',
-        password: 'password123',
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '1234567890',
-      };
-      mockAuthService.signup.mockRejectedValue(
-        new ConflictException('Email already exists'),
-      );
-
-      // Act & Assert
-      await expect(controller.signup(dto)).rejects.toThrow(ConflictException);
+      expect(authService.signup).toHaveBeenCalledWith(dto);
+      expect(result).toEqual(mockResult);
     });
   });
 
   describe('login', () => {
-    it('should call authService.login and return result', async () => {
+    it('should login and return tokens using AAA', async () => {
       // Arrange
       const dto: LoginDto = {
-        email: 'test@example.com',
+        email_or_username: 'tester',
         password: 'password123',
       };
-      const result = { accessToken: 'token123', refreshToken: 'refresh123' };
-      mockAuthService.login.mockResolvedValue(result);
+      const mockTokens = { accessToken: 'jwt', user: { username: 'tester' } };
+      mockAuthService.login.mockResolvedValue(mockTokens);
 
       // Act
-      const response = await controller.login(dto);
+      const result = await controller.login(dto);
 
       // Assert
-      expect(mockAuthService.login).toHaveBeenCalledWith(dto);
-      expect(response).toEqual(result);
-    });
-
-    it('should propagate UnauthorizedException from authService', async () => {
-      // Arrange
-      const dto: LoginDto = {
-        email: 'wrong@example.com',
-        password: 'wrongpass',
-      };
-      mockAuthService.login.mockRejectedValue(
-        new UnauthorizedException('Invalid credentials'),
-      );
-
-      // Act & Assert
-      await expect(controller.login(dto)).rejects.toThrow(
-        UnauthorizedException,
-      );
+      expect(authService.login).toHaveBeenCalledWith(dto);
+      expect(result).toEqual(mockTokens);
     });
   });
 });

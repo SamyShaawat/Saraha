@@ -6,6 +6,13 @@ import { CreateUserDto, LoginDto } from '@saraha/dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /** POST /api/auth/register */
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  register(@Body() dto: CreateUserDto) {
+    return this.authService.signup(dto);
+  }
+
   /** POST /api/auth/signup */
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
@@ -18,5 +25,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  /** POST /api/auth/facebook */
+  @Post('facebook')
+  @HttpCode(HttpStatus.OK)
+  facebookLogin(@Body('access_token') token: string) {
+    return this.authService.facebookLogin(token);
   }
 }
