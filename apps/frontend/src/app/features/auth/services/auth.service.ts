@@ -31,6 +31,7 @@ type LoginResponse = {
     username: string;
     firstName: string;
     lastName: string;
+    preferredLanguage?: 'en' | 'ar';
   };
 };
 

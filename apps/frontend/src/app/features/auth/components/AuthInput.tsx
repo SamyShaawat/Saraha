@@ -11,6 +11,8 @@ type AuthInputProps = {
   canTogglePassword?: boolean;
   passwordVisible?: boolean;
   onTogglePasswordVisibility?: () => void;
+  showPasswordLabel?: string;
+  hidePasswordLabel?: string;
 };
 
 export function AuthInput({
@@ -23,6 +25,8 @@ export function AuthInput({
   canTogglePassword = false,
   passwordVisible = false,
   onTogglePasswordVisibility,
+  showPasswordLabel = 'Show password',
+  hidePasswordLabel = 'Hide password',
 }: AuthInputProps) {
   const inputType = canTogglePassword ? (passwordVisible ? 'text' : 'password') : type;
 
@@ -55,7 +59,7 @@ export function AuthInput({
             {...inspectProps('AuthInput.TogglePassword', { visible: passwordVisible })}
             type="button"
             onClick={onTogglePasswordVisibility}
-            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+            aria-label={passwordVisible ? hidePasswordLabel : showPasswordLabel}
             style={{
               position: 'absolute',
               right: '0.8rem',

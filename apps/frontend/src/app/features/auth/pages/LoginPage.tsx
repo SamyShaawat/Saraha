@@ -8,10 +8,12 @@ import { AuthInput } from '../components/AuthInput';
 import { getAuthError } from '../utils/getAuthError';
 import { login, socialLogin } from '../services/auth.service';
 import { inspectProps } from '../../shared/utils/inspect';
+import { useI18n } from '../../../i18n';
 
 export function LoginPage() {
   useRedirectIfAuthenticated('/dashboard');
   const navigate = useNavigate();
+  const { t, setLanguage } = useI18n();
 
   const [formData, setFormData] = useState({
     email_or_username: '',
@@ -21,7 +23,11 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const saveSession = (data: { accessToken: string; refreshToken: string; user: unknown }) => {
+  const saveSession = (data: {
+    accessToken: string;
+    refreshToken: string;
+    user: { preferredLanguage?: 'en' | 'ar' };
+  }) => {
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('user', JSON.stringify(data.user));
@@ -40,15 +46,19 @@ export function LoginPage() {
     try {
       const data = await login(formData);
       if (!data.success) {
-        throw new Error(getAuthError(data.error, 'Login failed'));
+        throw new Error(getAuthError(data.error, t('auth.login.failed')));
       }
 
       saveSession(data.data);
+      if (data.data.user.preferredLanguage) {
+        await setLanguage(data.data.user.preferredLanguage);
+      }
 
-      toast.success('Login successful! Welcome back.');
+      toast.success(t('auth.login.success'));
       navigate('/dashboard');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+      const message =
+        err instanceof Error ? err.message : t('common.unexpectedError');
       setError(message);
       toast.error(message);
     } finally {
@@ -57,7 +67,9 @@ export function LoginPage() {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'facebook') => {
-    const token = window.prompt(`Paste your ${provider} access token`);
+    const token = window.prompt(
+      t('auth.login.socialPrompt', { provider }),
+    );
     if (!token) {
       return;
     }
@@ -67,14 +79,20 @@ export function LoginPage() {
     try {
       const data = await socialLogin(provider, token.trim());
       if (!data.success) {
-        throw new Error(getAuthError(data.error, `Failed to login with ${provider}`));
+        throw new Error(
+          getAuthError(data.error, t('auth.login.socialFailed', { provider })),
+        );
       }
 
       saveSession(data.data);
-      toast.success(`Logged in with ${provider}`);
+      if (data.data.user.preferredLanguage) {
+        await setLanguage(data.data.user.preferredLanguage);
+      }
+      toast.success(t('auth.login.socialSuccess', { provider }));
       navigate('/dashboard');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+      const message =
+        err instanceof Error ? err.message : t('common.unexpectedError');
       setError(message);
       toast.error(message);
     } finally {
@@ -85,24 +103,24 @@ export function LoginPage() {
   return (
     <PageShell pageName="LoginPage" contentName="LoginPage.Container" centered maxWidth="520px">
         <AuthCard
-          title="Welcome Back"
-          subtitle="Login to check your messages"
+          title={t('auth.login.title')}
+          subtitle={t('auth.login.subtitle')}
           error={error}
-          footerText="Don't have an account?"
-          footerLinkText="Register"
+          footerText={t('auth.login.footerText')}
+          footerLinkText={t('auth.login.footerLink')}
           footerLinkTo="/register"
         >
           <form {...inspectProps('LoginPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
             <AuthInput
-              label="Email or Username"
+              label={t('auth.login.emailOrUsername')}
               name="email_or_username"
               type="text"
               value={formData.email_or_username}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder={t('auth.login.emailPlaceholder')}
             />
             <AuthInput
-              label="Password"
+              label={t('auth.login.password')}
               name="password"
               type="password"
               value={formData.password}
@@ -111,16 +129,18 @@ export function LoginPage() {
               canTogglePassword
               passwordVisible={showPassword}
               onTogglePasswordVisibility={() => setShowPassword((prev) => !prev)}
+              showPasswordLabel={t('auth.input.showPassword')}
+              hidePasswordLabel={t('auth.input.hidePassword')}
             />
 
             <div {...inspectProps('LoginPage.ForgotContainer')} style={{ textAlign: 'right' }}>
               <Link {...inspectProps('LoginPage.ForgotLink', { to: '/forgot-password' })} to="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--primary-color)' }}>
-                Forgot?
+                {t('auth.login.forgot')}
               </Link>
             </div>
 
             <button {...inspectProps('LoginPage.SubmitButton')} type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? t('auth.login.submitting') : t('auth.login.submit')}
             </button>
 
             <button
@@ -131,7 +151,7 @@ export function LoginPage() {
               style={{ padding: '1rem' }}
               onClick={() => void handleSocialLogin('google')}
             >
-              Login with Google
+              {t('auth.login.google')}
             </button>
 
             <button
@@ -142,7 +162,7 @@ export function LoginPage() {
               style={{ padding: '1rem' }}
               onClick={() => void handleSocialLogin('facebook')}
             >
-              Login with Facebook
+              {t('auth.login.facebook')}
             </button>
           </form>
         </AuthCard>

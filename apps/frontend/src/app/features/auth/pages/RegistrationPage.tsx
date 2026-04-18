@@ -8,10 +8,12 @@ import { AuthInput } from '../components/AuthInput';
 import { getAuthError } from '../utils/getAuthError';
 import { register, socialSignup } from '../services/auth.service';
 import { inspectProps } from '../../shared/utils/inspect';
+import { useI18n } from '../../../i18n';
 
 export function RegistrationPage() {
   useRedirectIfAuthenticated('/dashboard');
   const navigate = useNavigate();
+  const { t, setLanguage } = useI18n();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,7 +26,11 @@ export function RegistrationPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const saveSession = (data: { accessToken: string; refreshToken: string; user: unknown }) => {
+  const saveSession = (data: {
+    accessToken: string;
+    refreshToken: string;
+    user: { preferredLanguage?: 'en' | 'ar' };
+  }) => {
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('user', JSON.stringify(data.user));
@@ -43,13 +49,14 @@ export function RegistrationPage() {
     try {
       const data = await register(formData);
       if (!data.success) {
-        throw new Error(getAuthError(data.error, 'Registration failed'));
+        throw new Error(getAuthError(data.error, t('auth.register.failed')));
       }
 
-      toast.success('Registration successful! Please login.');
+      toast.success(t('auth.register.success'));
       navigate('/login');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+      const message =
+        err instanceof Error ? err.message : t('common.unexpectedError');
       setError(message);
       toast.error(message);
     } finally {
@@ -58,7 +65,9 @@ export function RegistrationPage() {
   };
 
   const handleSocialSignup = async (provider: 'google' | 'facebook') => {
-    const token = window.prompt(`Paste your ${provider} access token`);
+    const token = window.prompt(
+      t('auth.login.socialPrompt', { provider }),
+    );
     if (!token) {
       return;
     }
@@ -68,14 +77,20 @@ export function RegistrationPage() {
     try {
       const data = await socialSignup(provider, token.trim());
       if (!data.success) {
-        throw new Error(getAuthError(data.error, `Failed to signup with ${provider}`));
+        throw new Error(
+          getAuthError(data.error, t('auth.register.socialFailed', { provider })),
+        );
       }
 
       saveSession(data.data);
-      toast.success(`Signed up with ${provider}`);
+      if (data.data.user.preferredLanguage) {
+        await setLanguage(data.data.user.preferredLanguage);
+      }
+      toast.success(t('auth.register.socialSuccess', { provider }));
       navigate('/dashboard');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+      const message =
+        err instanceof Error ? err.message : t('common.unexpectedError');
       setError(message);
       toast.error(message);
     } finally {
@@ -86,17 +101,17 @@ export function RegistrationPage() {
   return (
     <PageShell pageName="RegistrationPage" contentName="RegistrationPage.Container" centered maxWidth="560px">
         <AuthCard
-          title="Join the community"
-          subtitle="Create your account in seconds"
+          title={t('auth.register.title')}
+          subtitle={t('auth.register.subtitle')}
           error={error}
-          footerText="Already have an account?"
-          footerLinkText="Login"
+          footerText={t('auth.register.footerText')}
+          footerLinkText={t('auth.register.footerLink')}
           footerLinkTo="/login"
         >
           <form {...inspectProps('RegistrationPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
             <div {...inspectProps('RegistrationPage.NameRow')} className="card-grid-2">
               <AuthInput
-                label="First Name"
+                label={t('auth.register.firstName')}
                 name="firstName"
                 type="text"
                 value={formData.firstName}
@@ -104,7 +119,7 @@ export function RegistrationPage() {
                 placeholder="Jane"
               />
               <AuthInput
-                label="Last Name"
+                label={t('auth.register.lastName')}
                 name="lastName"
                 type="text"
                 value={formData.lastName}
@@ -114,7 +129,7 @@ export function RegistrationPage() {
             </div>
 
             <AuthInput
-              label="Unique Username"
+              label={t('auth.register.username')}
               name="username"
               type="text"
               value={formData.username}
@@ -122,7 +137,7 @@ export function RegistrationPage() {
               placeholder="jane_doe"
             />
             <AuthInput
-              label="Email Address"
+              label={t('auth.register.email')}
               name="email"
               type="email"
               value={formData.email}
@@ -130,7 +145,7 @@ export function RegistrationPage() {
               placeholder="jane@example.com"
             />
             <AuthInput
-              label="Password"
+              label={t('auth.register.password')}
               name="password"
               type="password"
               value={formData.password}
@@ -139,10 +154,12 @@ export function RegistrationPage() {
               canTogglePassword
               passwordVisible={showPassword}
               onTogglePasswordVisibility={() => setShowPassword((prev) => !prev)}
+              showPasswordLabel={t('auth.input.showPassword')}
+              hidePasswordLabel={t('auth.input.hidePassword')}
             />
 
             <button {...inspectProps('RegistrationPage.SubmitButton')} type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
-              {loading ? 'Creating...' : 'Create Account'}
+              {loading ? t('auth.register.submitting') : t('auth.register.submit')}
             </button>
 
             <button
@@ -153,7 +170,7 @@ export function RegistrationPage() {
               style={{ padding: '1rem' }}
               onClick={() => void handleSocialSignup('google')}
             >
-              Signup with Google
+              {t('auth.register.google')}
             </button>
 
             <button
@@ -164,7 +181,7 @@ export function RegistrationPage() {
               style={{ padding: '1rem' }}
               onClick={() => void handleSocialSignup('facebook')}
             >
-              Signup with Facebook
+              {t('auth.register.facebook')}
             </button>
           </form>
         </AuthCard>
