@@ -97,12 +97,12 @@ GOOGLE_CLIENT_ID="your-google-client-id"
    
    **Development Mode (Frontend + Backend):**
    ```bash
-   pnpm run dev
+   pnpm run serve
    ```
    
    **Individual Services:**
-   - **Frontend:** `pnpm run dev:frontend` (http://localhost:4208)
-   - **Backend:** `pnpm run dev:backend` (http://localhost:3008)
+   - **Frontend:** `pnpm run serve:frontend` (http://localhost:4208)
+   - **Backend:** `pnpm run serve:backend` (http://localhost:3008)
 
 ---
 
@@ -110,7 +110,9 @@ GOOGLE_CLIENT_ID="your-google-client-id"
 
 | Task | Command |
 | :--- | :--- |
-| **Start All** | `pnpm run dev` |
+| **Start All** | `pnpm run serve` |
+| **Start Backend** | `pnpm run serve:backend` |
+| **Start Frontend** | `pnpm run serve:frontend` |
 | **Build Project** | `pnpm run build` |
 | **Run Tests** | `pnpm run test` |
 | **Linting** | `pnpm run lint` |
