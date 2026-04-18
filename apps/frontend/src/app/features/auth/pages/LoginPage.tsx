@@ -7,6 +7,7 @@ import { AuthCard } from '../components/AuthCard';
 import { AuthInput } from '../components/AuthInput';
 import { getAuthError } from '../utils/getAuthError';
 import { login, socialLogin } from '../services/auth.service';
+import { inspectProps } from '../../shared/utils/inspect';
 
 export function LoginPage() {
   useRedirectIfAuthenticated('/dashboard');
@@ -81,9 +82,10 @@ export function LoginPage() {
   };
 
   return (
-    <div>
+    <div {...inspectProps('LoginPage')}>
       <Navbar />
       <div
+        {...inspectProps('LoginPage.Container')}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -100,7 +102,7 @@ export function LoginPage() {
           footerLinkText="Register"
           footerLinkTo="/register"
         >
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
+          <form {...inspectProps('LoginPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
             <AuthInput
               label="Email or Username"
               name="email_or_username"
@@ -118,17 +120,18 @@ export function LoginPage() {
               placeholder="••••••••"
             />
 
-            <div style={{ textAlign: 'right' }}>
-              <Link to="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--primary-color)' }}>
+            <div {...inspectProps('LoginPage.ForgotContainer')} style={{ textAlign: 'right' }}>
+              <Link {...inspectProps('LoginPage.ForgotLink', { to: '/forgot-password' })} to="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--primary-color)' }}>
                 Forgot?
               </Link>
             </div>
 
-            <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
+            <button {...inspectProps('LoginPage.SubmitButton')} type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
 
             <button
+              {...inspectProps('LoginPage.GoogleButton')}
               type="button"
               className="btn btn-glass"
               disabled={loading}
@@ -139,6 +142,7 @@ export function LoginPage() {
             </button>
 
             <button
+              {...inspectProps('LoginPage.FacebookButton')}
               type="button"
               className="btn btn-glass"
               disabled={loading}

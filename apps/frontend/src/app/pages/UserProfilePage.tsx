@@ -1,21 +1,22 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import { useParams } from 'react-router-dom';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 export function UserProfilePage() {
   const { username } = useParams();
 
   return (
-    <div>
+    <div {...inspectProps('UserProfilePage', { username })}>
       <Navbar />
-      <div style={{ 
+      <div {...inspectProps('UserProfilePage.Container')} style={{ 
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
         minHeight: '100vh',
         padding: '2rem'
       }}>
-        <div className="glass-panel animate-fade-in-up" style={{ 
+        <div {...inspectProps('UserProfilePage.Card')} className="glass-panel animate-fade-in-up" style={{ 
           maxWidth: '600px', 
           width: '100%', 
           padding: '3rem',
@@ -42,7 +43,7 @@ export function UserProfilePage() {
           <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Send message to <span className="gradient-text">@{username}</span></h1>
           <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>Leave a constructive message anonymously</p>
           
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <form {...inspectProps('UserProfilePage.Form')} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <textarea 
               rows={6} 
               style={{ 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 export function RegistrationPage() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export function RegistrationPage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/signup', {
+      const response = await fetch('http://localhost:3008/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -59,9 +60,9 @@ export function RegistrationPage() {
   };
 
   return (
-    <div>
+    <div {...inspectProps('LegacyRegistrationPage')}>
       <Navbar />
-      <div style={{ 
+      <div {...inspectProps('LegacyRegistrationPage.Container')} style={{ 
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
@@ -69,7 +70,7 @@ export function RegistrationPage() {
         padding: '2rem',
         marginTop: '2rem'
       }}>
-        <div className="glass-panel animate-fade-in-up" style={{ 
+        <div {...inspectProps('LegacyRegistrationPage.Card')} className="glass-panel animate-fade-in-up" style={{ 
           maxWidth: '500px', 
           width: '100%', 
           padding: '3rem',
@@ -80,7 +81,7 @@ export function RegistrationPage() {
           
           {error && <p style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</p>}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'left' }}>
+          <form {...inspectProps('LegacyRegistrationPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'left' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>First Name</label>

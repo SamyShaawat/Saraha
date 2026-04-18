@@ -9,6 +9,7 @@ import SettingsPage from './features/dashboard/pages/SettingsPage';
 import ContactPage from './features/static/pages/ContactPage';
 import PrivacyPage from './features/static/pages/PrivacyPage';
 import TermsPage from './features/static/pages/TermsPage';
+import { InspectPage } from './features/shared/components/InspectPage';
 
 export function App() {
   return (
@@ -33,19 +34,19 @@ export function App() {
         }} 
       />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/:username" element={<UserProfilePage />} />
+        <Route path="/" element={<InspectPage name="LandingPage" route="/"><LandingPage /></InspectPage>} />
+        <Route path="/login" element={<InspectPage name="LoginPage" route="/login"><LoginPage /></InspectPage>} />
+        <Route path="/register" element={<InspectPage name="RegistrationPage" route="/register"><RegistrationPage /></InspectPage>} />
+        <Route path="/:username" element={<InspectPage name="UserProfilePage" route="/:username"><UserProfilePage /></InspectPage>} />
         
         {/* Protected Routes placeholder */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/dashboard" element={<InspectPage name="DashboardPage" route="/dashboard"><Dashboard /></InspectPage>} />
+        <Route path="/settings" element={<InspectPage name="SettingsPage" route="/settings"><SettingsPage /></InspectPage>} />
         
         {/* Static Pages */}
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/contact" element={<InspectPage name="ContactPage" route="/contact"><ContactPage /></InspectPage>} />
+        <Route path="/privacy" element={<InspectPage name="PrivacyPage" route="/privacy"><PrivacyPage /></InspectPage>} />
+        <Route path="/terms" element={<InspectPage name="TermsPage" route="/terms"><TermsPage /></InspectPage>} />
       </Routes>
     </BrowserRouter>
   );

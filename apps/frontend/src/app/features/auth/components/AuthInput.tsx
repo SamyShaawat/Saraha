@@ -1,4 +1,5 @@
 import type React from 'react';
+import { inspectProps } from '../../shared/utils/inspect';
 
 type AuthInputProps = {
   label: string;
@@ -11,11 +12,12 @@ type AuthInputProps = {
 
 export function AuthInput({ label, name, type, value, placeholder, onChange }: AuthInputProps) {
   return (
-    <div>
-      <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+    <div {...inspectProps('AuthInput', { name, type })}>
+      <label {...inspectProps('AuthInput.Label', { name })} style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
         {label}
       </label>
       <input
+        {...inspectProps('AuthInput.Field', { name, type })}
         type={type}
         name={name}
         required

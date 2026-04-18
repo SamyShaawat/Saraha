@@ -1,16 +1,17 @@
 import React from 'react';
 import Navbar from '../../components/Navbar';
+import { inspectProps } from '../../features/shared/utils/inspect';
 
 export function ContactPage() {
   return (
-    <div>
+    <div {...inspectProps('ContactPage')}>
       <Navbar />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '2rem' }}>
-        <div className="glass-panel animate-fade-in-up" style={{ maxWidth: '600px', width: '100%', padding: '3rem' }}>
+      <div {...inspectProps('ContactPage.Container')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '2rem' }}>
+        <div {...inspectProps('ContactPage.Card')} className="glass-panel animate-fade-in-up" style={{ maxWidth: '600px', width: '100%', padding: '3rem' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center' }}>Contact <span className="gradient-text">Us</span></h1>
           <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', textAlign: 'center' }}>Have questions or feedback? We'd love to hear from you.</p>
           
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <form {...inspectProps('ContactPage.Form')} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Name</label>
               <input type="text" className="glass-panel" style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--glass-border)', background: 'transparent', color: '#fff' }} />

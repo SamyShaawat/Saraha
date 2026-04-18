@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type React from 'react';
+import { inspectProps } from '../../shared/utils/inspect';
 
 type AuthCardProps = {
   title: string;
@@ -22,6 +23,7 @@ export function AuthCard({
 }: AuthCardProps) {
   return (
     <div
+      {...inspectProps('AuthCard', { title })}
       className="glass-panel animate-fade-in-up"
       style={{
         maxWidth: '480px',
@@ -30,16 +32,16 @@ export function AuthCard({
         textAlign: 'center',
       }}
     >
-      <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{title}</h2>
-      <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>{subtitle}</p>
+      <h2 {...inspectProps('AuthCard.Title')} style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{title}</h2>
+      <p {...inspectProps('AuthCard.Subtitle')} style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>{subtitle}</p>
 
-      {error && <p style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</p>}
+      {error && <p {...inspectProps('AuthCard.Error')} style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</p>}
 
-      {children}
+      <div {...inspectProps('AuthCard.Content')}>{children}</div>
 
-      <p style={{ marginTop: '2rem', color: 'var(--text-muted)' }}>
+      <p {...inspectProps('AuthCard.Footer')} style={{ marginTop: '2rem', color: 'var(--text-muted)' }}>
         {footerText}{' '}
-        <Link to={footerLinkTo} style={{ color: 'var(--primary-color)', fontWeight: 600 }}>
+        <Link {...inspectProps('AuthCard.FooterLink', { to: footerLinkTo })} to={footerLinkTo} style={{ color: 'var(--primary-color)', fontWeight: 600 }}>
           {footerLinkText}
         </Link>
       </p>

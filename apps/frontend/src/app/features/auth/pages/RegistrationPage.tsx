@@ -7,6 +7,7 @@ import { AuthCard } from '../components/AuthCard';
 import { AuthInput } from '../components/AuthInput';
 import { getAuthError } from '../utils/getAuthError';
 import { register, socialSignup } from '../services/auth.service';
+import { inspectProps } from '../../shared/utils/inspect';
 
 export function RegistrationPage() {
   useRedirectIfAuthenticated('/dashboard');
@@ -82,9 +83,10 @@ export function RegistrationPage() {
   };
 
   return (
-    <div>
+    <div {...inspectProps('RegistrationPage')}>
       <Navbar />
       <div
+        {...inspectProps('RegistrationPage.Container')}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -102,8 +104,8 @@ export function RegistrationPage() {
           footerLinkText="Login"
           footerLinkTo="/login"
         >
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <form {...inspectProps('RegistrationPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
+            <div {...inspectProps('RegistrationPage.NameRow')} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <AuthInput
                 label="First Name"
                 name="firstName"
@@ -147,11 +149,12 @@ export function RegistrationPage() {
               placeholder="••••••••"
             />
 
-            <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
+            <button {...inspectProps('RegistrationPage.SubmitButton')} type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
               {loading ? 'Creating...' : 'Create Account'}
             </button>
 
             <button
+              {...inspectProps('RegistrationPage.GoogleButton')}
               type="button"
               className="btn btn-glass"
               disabled={loading}
@@ -162,6 +165,7 @@ export function RegistrationPage() {
             </button>
 
             <button
+              {...inspectProps('RegistrationPage.FacebookButton')}
               type="button"
               className="btn btn-glass"
               disabled={loading}

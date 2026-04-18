@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -11,11 +12,11 @@ export function LandingPage() {
     }
   }, [navigate]);
   return (
-    <div>
+    <div {...inspectProps('LandingPage')}>
       <Navbar />
       
       {/* Hero Section */}
-      <section style={{ 
+      <section {...inspectProps('LandingPage.Hero')} style={{ 
         paddingTop: '8rem', 
         paddingBottom: '4rem', 
         display: 'flex', 
@@ -50,7 +51,7 @@ export function LandingPage() {
       </section>
 
       {/* Feature Cards Section ... */}
-      <section style={{ 
+      <section {...inspectProps('LandingPage.Features')} style={{ 
         maxWidth: '1200px', 
         margin: '0 auto', 
         padding: '4rem 2rem',
@@ -84,7 +85,7 @@ export function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ 
+      <footer {...inspectProps('LandingPage.Footer')} style={{ 
         borderTop: '1px solid var(--glass-border)', 
         padding: '3rem 2rem', 
         textAlign: 'center', 

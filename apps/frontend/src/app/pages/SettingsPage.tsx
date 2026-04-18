@@ -1,15 +1,16 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 export function SettingsPage() {
   return (
-    <div>
+    <div {...inspectProps('SettingsPage')}>
       <Navbar />
-      <div style={{ display: 'flex', minHeight: '100vh', paddingTop: '6rem' }}>
+      <div {...inspectProps('SettingsPage.Layout')} style={{ display: 'flex', minHeight: '100vh', paddingTop: '6rem' }}>
         
         {/* Sidebar (Shared with Dashboard) */}
-        <div style={{ 
+        <div {...inspectProps('SettingsPage.Sidebar')} style={{ 
           width: '300px', 
           borderRight: '1px solid var(--glass-border)', 
           padding: '2rem',
@@ -17,7 +18,7 @@ export function SettingsPage() {
           flexDirection: 'column',
           gap: '2rem'
         }}>
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <nav {...inspectProps('SettingsPage.SidebarNav')} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
              <Link to="/dashboard" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>Inbox</Link>
              <Link to="/favorites" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>Favorites</Link>
              <Link to="/settings" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary-color)', fontWeight: 600 }}>Settings</Link>
@@ -25,10 +26,10 @@ export function SettingsPage() {
         </div>
 
         {/* Settings Content */}
-        <div style={{ flex: 1, padding: '2rem 4rem', maxWidth: '800px' }}>
+        <div {...inspectProps('SettingsPage.Content')} style={{ flex: 1, padding: '2rem 4rem', maxWidth: '800px' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>Account <span className="gradient-text">Settings</span></h1>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+          <div {...inspectProps('SettingsPage.SectionList')} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
             
             <section className="glass-panel" style={{ padding: '2rem' }}>
                <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Profile Information</h2>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 const MOCK_MESSAGES = [
   { id: '1', content: 'You are doing a great job! Keep it up.', date: '2 hours ago', isFavorite: false },
@@ -10,12 +11,12 @@ const MOCK_MESSAGES = [
 
 export function Dashboard() {
   return (
-    <div>
+    <div {...inspectProps('DashboardPage')}>
       <Navbar />
-      <div style={{ display: 'flex', minHeight: '100vh', paddingTop: '6rem' }}>
+      <div {...inspectProps('DashboardPage.Layout')} style={{ display: 'flex', minHeight: '100vh', paddingTop: '6rem' }}>
         
         {/* Sidebar */}
-        <div style={{ 
+        <div {...inspectProps('DashboardPage.Sidebar')} style={{ 
           width: '300px', 
           borderRight: '1px solid var(--glass-border)', 
           padding: '2rem',
@@ -31,7 +32,7 @@ export function Dashboard() {
             <button className="btn btn-glass" style={{ width: '100%', marginTop: '0.5rem', padding: '0.5rem' }}>Copy Link</button>
           </div>
 
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <nav {...inspectProps('DashboardPage.SidebarNav')} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
              <Link to="/dashboard" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary-color)', fontWeight: 600 }}>Inbox</Link>
              <Link to="/favorites" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>Favorites</Link>
              <Link to="/public-messages" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>Public Wall</Link>
@@ -40,15 +41,15 @@ export function Dashboard() {
         </div>
 
         {/* Main Content */}
-        <div style={{ flex: 1, padding: '2rem 4rem' }}>
+        <div {...inspectProps('DashboardPage.Content')} style={{ flex: 1, padding: '2rem 4rem' }}>
           <header style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
              <h1 style={{ fontSize: '2.5rem' }}>My <span className="gradient-text">Messages</span></h1>
              <div style={{ color: 'var(--text-muted)' }}>{MOCK_MESSAGES.length} Messages received</div>
           </header>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div {...inspectProps('DashboardPage.MessageList')} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {MOCK_MESSAGES.map((msg) => (
-              <div key={msg.id} className="glass-panel animate-fade-in-up" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div {...inspectProps('DashboardPage.MessageCard', { messageId: msg.id })} key={msg.id} className="glass-panel animate-fade-in-up" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                    <p style={{ fontSize: '1.1rem', marginBottom: '1rem', lineHeight: '1.5' }}>{msg.content}</p>
                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{msg.date}</span>

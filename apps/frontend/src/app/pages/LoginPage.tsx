@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { inspectProps } from '../features/shared/utils/inspect';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export function LoginPage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('http://localhost:3008/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -62,16 +63,16 @@ export function LoginPage() {
   };
 
   return (
-    <div>
+    <div {...inspectProps('LegacyLoginPage')}>
       <Navbar />
-      <div style={{ 
+      <div {...inspectProps('LegacyLoginPage.Container')} style={{ 
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
         minHeight: '100vh',
         padding: '2rem'
       }}>
-        <div className="glass-panel animate-fade-in-up" style={{ 
+        <div {...inspectProps('LegacyLoginPage.Card')} className="glass-panel animate-fade-in-up" style={{ 
           maxWidth: '450px', 
           width: '100%', 
           padding: '3rem',
@@ -82,7 +83,7 @@ export function LoginPage() {
           
           {error && <p style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</p>}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', textAlign: 'left' }}>
+          <form {...inspectProps('LegacyLoginPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', textAlign: 'left' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Email or Username</label>
               <input 
