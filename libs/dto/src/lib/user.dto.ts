@@ -1,4 +1,7 @@
-import { IsEmail, IsString, IsOptional, MinLength, MaxLength, IsUrl } from 'class-validator';
+import { IsEmail, IsString, IsOptional, MinLength, MaxLength, IsUrl, IsIn } from 'class-validator';
+
+export const supportedLanguages = ['en', 'ar'] as const;
+export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export class CreateUserDto {
   @IsString()
@@ -69,4 +72,10 @@ export class ChangePasswordDto {
   @IsString()
   @MinLength(8)
   new_password!: string;
+}
+
+export class UpdatePreferredLanguageDto {
+  @IsString()
+  @IsIn(supportedLanguages)
+  language!: SupportedLanguage;
 }

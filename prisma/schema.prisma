@@ -20,6 +20,7 @@ model User {
   role                  Int       @default(0)
   gender                Int       @default(1)
   profilePicture        String?
+  preferredLanguage     String    @default("en") @db.VarChar(2)
   CoverProfilePicture   String[]
   confirmEmail          DateTime?
   changeCredentialsTime DateTime?

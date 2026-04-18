@@ -12,7 +12,12 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['apps/backend/src/**/*.api.spec.ts'],
+    include: [
+      'apps/backend/src/**/*.api.spec.ts',
+      'apps/frontend/src/**/*.api.spec.ts',
+      'apps/frontend/src/**/*.api.spec.tsx',
+    ],
+    environmentMatchGlobs: [['apps/frontend/src/**/*.api.spec.tsx', 'jsdom']],
     exclude: ['apps/*-e2e/**'],
   },
 });
