@@ -12,6 +12,6 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "types": ["node", "express", "jsonwebtoken"]
+    "types": ["node", "express", "jsonwebtoken", "jest"]
   }
 }

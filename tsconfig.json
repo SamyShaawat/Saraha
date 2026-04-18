@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "express", "jsonwebtoken"]
+    "types": ["node", "express", "jsonwebtoken", "jest"]
   },
   "extends": "./tsconfig.base.json",
   "include": ["apps/**/*", "libs/**/*"]
