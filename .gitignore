@@ -1,16 +1,43 @@
-/config/.env.development
-/config/.env.production
-node_modules/*
-CLAUDE.md
-.claude/*
+# Dependency directories
+node_modules/
 
+# Build and Test outputs
+dist/
+tmp/
+out-tsc/
+build/
+coverage/
 
-node_modules
-.vscode
-.nx
+# Nx Cache
+.nx/
 .nx/cache
 .nx/workspace-data
-vite.config.*.timestamp*
 
+# Environment files
 .env
-dist
+.env.*
+!.env.example
+config/.env.development
+config/.env.production
+
+# IDEs and OS
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Framework / Tooling 
+vite.config.*.timestamp*
+CLAUDE.md
+.claude/
+.vscode/
