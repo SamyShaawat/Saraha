@@ -1,5 +1,6 @@
 import React from 'react';
 import { inspectProps } from '../../features/shared/utils/inspect';
+import { useI18n } from '../../i18n';
 
 function ProfileAvatar({ username }: { username?: string }) {
   return (
@@ -25,6 +26,8 @@ function ProfileAvatar({ username }: { username?: string }) {
 }
 
 function AnonymousMessageForm() {
+  const { t } = useI18n();
+
   return (
     <form {...inspectProps('UserProfilePage.Form')} className="responsive-stack">
       <textarea
@@ -42,22 +45,24 @@ function AnonymousMessageForm() {
           lineHeight: '1.6',
           fontSize: '1rem',
         }}
-        placeholder="Type your anonymous message here..."
+        placeholder={t('profile.placeholder')}
       />
       <button type="submit" className="btn btn-primary" style={{ padding: '1rem 2rem', alignSelf: 'center', fontSize: '1rem' }}>
-        Send Message Anonymously
+        {t('profile.send')}
       </button>
     </form>
   );
 }
 
 function ProfileFooter() {
+  const { t } = useI18n();
+
   return (
     <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--glass-border)' }}>
       <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-        Want to receive anonymous messages?{' '}
+        {t('profile.footer.prompt')}{' '}
         <a href="/register" style={{ color: 'var(--primary-color)' }}>
-          Create your account
+          {t('profile.footer.link')}
         </a>
       </p>
     </div>
@@ -65,6 +70,8 @@ function ProfileFooter() {
 }
 
 export function UserProfileCard({ username }: { username?: string }) {
+  const { t } = useI18n();
+
   return (
     <section
       {...inspectProps('UserProfilePage.Card')}
@@ -73,9 +80,11 @@ export function UserProfileCard({ username }: { username?: string }) {
     >
       <ProfileAvatar username={username} />
       <h1 style={{ fontSize: 'clamp(1.4rem, 3.5vw, 2rem)', marginBottom: '0.5rem' }}>
-        Send message to <span className="gradient-text">@{username}</span>
+        {t('profile.title')} <span className="gradient-text">@{username}</span>
       </h1>
-      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Leave a constructive message anonymously</p>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+        {t('profile.subtitle')}
+      </p>
       <AnonymousMessageForm />
       <ProfileFooter />
     </section>

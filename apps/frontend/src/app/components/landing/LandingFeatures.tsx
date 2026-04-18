@@ -1,5 +1,6 @@
 import React from 'react';
 import { inspectProps } from '../../features/shared/utils/inspect';
+import { useI18n } from '../../i18n';
 
 type FeatureCardProps = {
   title: string;
@@ -36,22 +37,32 @@ function FeatureCard({ title, icon, tint, points }: FeatureCardProps) {
 }
 
 export function LandingFeatures() {
+  const { t } = useI18n();
+
   return (
     <section
       {...inspectProps('LandingPage.Features')}
       style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', padding: '1rem 0 2rem' }}
     >
       <FeatureCard
-        title="At Work"
+        title={t('landing.features.work.title')}
         icon="💼"
         tint="rgba(99, 102, 241, 0.2)"
-        points={['✨ Enhance your strengths', '🛠 Address your weaknesses', '📈 Build professional transparency']}
+        points={[
+          `✨ ${t('landing.features.work.point1')}`,
+          `🛠 ${t('landing.features.work.point2')}`,
+          `📈 ${t('landing.features.work.point3')}`,
+        ]}
       />
       <FeatureCard
-        title="With Friends"
+        title={t('landing.features.friends.title')}
         icon="🌟"
         tint="rgba(192, 132, 252, 0.2)"
-        points={['🤝 Strengthen your friendships', '🎭 Let your friends be honest', '💬 Know what people really think']}
+        points={[
+          `🤝 ${t('landing.features.friends.point1')}`,
+          `🎭 ${t('landing.features.friends.point2')}`,
+          `💬 ${t('landing.features.friends.point3')}`,
+        ]}
       />
     </section>
   );

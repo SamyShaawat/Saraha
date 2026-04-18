@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { inspectProps } from '../features/shared/utils/inspect';
+import { useI18n } from '../i18n';
 
 function NavbarBrand() {
   return (
@@ -12,6 +13,8 @@ function NavbarBrand() {
 }
 
 function NavbarPrimaryLink() {
+  const { t } = useI18n();
+
   return (
     <li>
       <Link
@@ -19,7 +22,7 @@ function NavbarPrimaryLink() {
         to="/contact"
         style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}
       >
-        Contact Us
+        {t('navbar.contactUs')}
       </Link>
     </li>
   );
@@ -32,24 +35,26 @@ function NavbarAuthActions({
   isAuthenticated: boolean;
   handleLogout: () => void;
 }) {
+  const { t } = useI18n();
+
   return (
     <li {...inspectProps('Navbar.AuthActions')} style={{ display: 'flex', gap: '1rem' }}>
       {isAuthenticated ? (
         <>
           <Link {...inspectProps('Navbar.DashboardLink', { to: '/dashboard' })} to="/dashboard" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-            Dashboard
+            {t('navbar.dashboard')}
           </Link>
           <button {...inspectProps('Navbar.LogoutButton')} onClick={handleLogout} className="btn btn-glass" style={{ cursor: 'pointer' }}>
-            Logout
+            {t('navbar.logout')}
           </button>
         </>
       ) : (
         <>
           <Link {...inspectProps('Navbar.LoginLink', { to: '/login' })} to="/login" className="btn btn-glass" style={{ textDecoration: 'none' }}>
-            Login
+            {t('navbar.login')}
           </Link>
           <Link {...inspectProps('Navbar.RegisterLink', { to: '/register' })} to="/register" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-            Register
+            {t('navbar.register')}
           </Link>
         </>
       )}
@@ -59,6 +64,7 @@ function NavbarAuthActions({
 
 export function Navbar() {
   const navigate = useNavigate();
+  const { language, setLanguage, t } = useI18n();
   const isAuthenticated = !!localStorage.getItem('accessToken');
 
   const handleLogout = () => {
@@ -95,6 +101,21 @@ export function Navbar() {
         {...inspectProps('Navbar.Actions')}
         style={{ display: 'flex', gap: '1rem', alignItems: 'center', margin: 0, padding: 0, listStyle: 'none', flexWrap: 'wrap', justifyContent: 'flex-end' }}
       >
+        <li>
+          <label style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginInlineEnd: '0.35rem' }}>
+            {t('common.language')}
+          </label>
+          <select
+            value={language}
+            onChange={(event) => void setLanguage(event.target.value === 'ar' ? 'ar' : 'en')}
+            className="btn btn-glass"
+            style={{ padding: '0.35rem 0.75rem' }}
+            aria-label={t('common.language')}
+          >
+            <option value="en">{t('common.english')}</option>
+            <option value="ar">{t('common.arabic')}</option>
+          </select>
+        </li>
         <NavbarPrimaryLink />
         <NavbarAuthActions isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       </ul>

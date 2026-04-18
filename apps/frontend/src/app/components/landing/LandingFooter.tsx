@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { inspectProps } from '../../features/shared/utils/inspect';
+import { useI18n } from '../../i18n';
 
 export function LandingFooter() {
+  const { t } = useI18n();
+
   return (
     <footer
       {...inspectProps('LandingPage.Footer')}
@@ -10,19 +13,19 @@ export function LandingFooter() {
     >
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem 2rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         <Link to="/contact" style={{ transition: 'color 0.2s' }}>
-          Feedback
+          {t('landing.footer.feedback')}
         </Link>
         <Link to="/privacy" style={{ transition: 'color 0.2s' }}>
-          Privacy & Terms
+          {t('landing.footer.privacy')}
         </Link>
         <a href="#" style={{ transition: 'color 0.2s' }}>
-          Facebook Group
+          {t('landing.footer.facebookGroup')}
         </a>
         <Link to="/contact" style={{ transition: 'color 0.2s' }}>
-          Contact Us
+          {t('landing.footer.contact')}
         </Link>
       </div>
-      <p>© Saraha 2026. All rights reserved.</p>
+      <p>{t('landing.footer.copyright')}</p>
     </footer>
   );
 }
