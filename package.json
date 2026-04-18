@@ -9,12 +9,16 @@
     "build:frontend": "nx build frontend",
     "build": "nx run-many -t build --all",
     "test": "nx run-many -t test --all",
+    "typecheck": "tsc --noEmit -p libs/dto/tsconfig.lib.json && tsc --noEmit -p libs/data-access/tsconfig.lib.json && tsc --noEmit -p libs/utils/tsconfig.lib.json && tsc --noEmit -p apps/backend/tsconfig.app.json && tsc --noEmit -p apps/frontend/tsconfig.app.json",
     "lint": "nx run-many -t lint --all",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:seed": "ts-node --project tsconfig.json -e \"require('ts-node/register')\" prisma/seed.ts",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "affected:lint": "nx affected --target=lint --base=origin/main --exclude=saraha",
+    "affected:build": "nx affected --target=build --base=origin/main --exclude=saraha",
+    "check:all": "pnpm install --frozen-lockfile && pnpm exec prisma generate && pnpm vitest --run && pnpm typecheck && pnpm affected:lint && pnpm affected:build"
   },
   "keywords": [],
   "author": "",
