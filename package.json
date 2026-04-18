@@ -86,7 +86,21 @@
     "typescript": "~5.9.2",
     "vite": "^8.0.0",
     "vitest": "~4.1.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "node-fetch": "^3.3.2"
   },
-  "nx": {}
+  "nx": {},
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "node-fetch"
+      ],
+      "allowedVersions": {
+        "node-fetch": "*"
+      }
+    }
+  }
 }

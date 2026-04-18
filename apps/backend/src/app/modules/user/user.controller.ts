@@ -1,7 +1,7 @@
 import { Controller, Get, Patch, Body, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { JwtGuard } from '@app/guards/jwt.guard';
-import { CurrentUser } from '@app/decorators/current-user.decorator';
+import { JwtGuard } from '../../guards/jwt.guard';
+import { CurrentUser } from '../../decorators/current-user.decorator';
 import { UpdateUserDto } from '@saraha/dto';
 
 @Controller('users')
