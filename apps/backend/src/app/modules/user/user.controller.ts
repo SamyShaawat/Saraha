@@ -1,23 +1,53 @@
-import { Controller, Get, Patch, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { JwtGuard } from '../../guards/jwt.guard';
-import { CurrentUser } from '../../decorators/current-user.decorator';
-import { UpdateUserDto } from '@saraha/dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { GetUser } from '../../common/decorators/user.decorator';
+import { UpdateProfileDto, ChangePasswordDto } from '@saraha/dto';
 
 @Controller('users')
-@UseGuards(JwtGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  /** GET /api/users/me */
+  /** GET /api/users/me (Protected) */
   @Get('me')
-  getProfile(@CurrentUser('sub') userId: string) {
-    return this.userService.getProfile(userId);
+  @UseGuards(JwtAuthGuard)
+  getMe(@GetUser('sub') userId: string) {
+    return this.userService.getMe(userId);
   }
 
-  /** PATCH /api/users/me */
-  @Patch('me')
-  updateProfile(@CurrentUser('sub') userId: string, @Body() dto: UpdateUserDto) {
+  /** PUT /api/users/me (Protected) */
+  @Put('me')
+  @UseGuards(JwtAuthGuard)
+  updateProfile(@GetUser('sub') userId: string, @Body() dto: UpdateProfileDto) {
     return this.userService.updateProfile(userId, dto);
+  }
+
+  /** PUT /api/users/me/password (Protected) */
+  @Put('me/password')
+  @UseGuards(JwtAuthGuard)
+  changePassword(@GetUser('sub') userId: string, @Body() dto: ChangePasswordDto) {
+    return this.userService.changePassword(userId, dto);
+  }
+
+  /** DELETE /api/users/me (Protected) */
+  @Delete('me')
+  @UseGuards(JwtAuthGuard)
+  deleteAccount(@GetUser('sub') userId: string) {
+    return this.userService.deleteAccount(userId);
+  }
+
+  /** GET /api/users/:username/profile (Public) */
+  @Get(':username/profile')
+  getPublicProfile(@Param('username') username: string) {
+    return this.userService.getPublicProfile(username);
+  }
+
+  /** GET /api/users/:username/public-messages (Public) */
+  @Get(':username/public-messages')
+  getPublicMessages(@Param('username') username: string) {
+    // We can inject MessageService here or implement logic in UserService
+    // For simplicity, let's keep it in UserService if possible, or just call MessageService
+    // I'll add it to UserService for consistency in this file
+    return this.userService.getPublicMessages(username);
   }
 }
