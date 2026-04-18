@@ -1,6 +1,11 @@
-import { IsEmail, IsString, IsOptional, MinLength, MaxLength } from 'class-validator';
+import { IsEmail, IsString, IsOptional, MinLength, MaxLength, IsUrl } from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
+  @MinLength(3)
+  @MaxLength(20)
+  username!: string;
+
   @IsString()
   @MinLength(2)
   @MaxLength(25)
@@ -15,38 +20,48 @@ export class CreateUserDto {
   email!: string;
 
   @IsString()
-  @IsOptional()
   @MinLength(8)
-  password?: string;
-
-  @IsString()
-  @IsOptional()
-  phone?: string;
+  password!: string;
 }
 
 export class LoginDto {
-  @IsEmail()
-  email!: string;
+  @IsString()
+  email_or_username!: string; // Flexible login
 
   @IsString()
   @MinLength(8)
   password!: string;
 }
 
-export class UpdateUserDto {
+export class FacebookAuthDto {
+  @IsString()
+  access_token!: string;
+}
+
+export class UpdateProfileDto {
   @IsString()
   @IsOptional()
-  @MinLength(2)
-  @MaxLength(25)
   firstName?: string;
 
   @IsString()
   @IsOptional()
-  @MinLength(2)
-  @MaxLength(25)
   lastName?: string;
 
   @IsString()
   @IsOptional()
-  phone?: string;
+  bio?: string;
+
+  @IsUrl()
+  @IsOptional()
+  profilePicture?: string;
+}
+
+export class ChangePasswordDto {
+  @IsString()
+  @MinLength(8)
+  old_password!: string;
+
+  @IsString()
+  @MinLength(8)
+  new_password!: string;
 }
