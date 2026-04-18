@@ -1,28 +1,52 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UpdateProfileDto } from '@saraha/dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
+class UserServiceFixture {
+  public lastGetMeUserId: string | null = null;
+  public lastUpdateCall: { userId: string; dto: UpdateProfileDto } | null = null;
+
+  async getMe(userId: string) {
+    this.lastGetMeUserId = userId;
+    return { id: userId, username: 'samy' };
+  }
+
+  async updateProfile(userId: string, dto: UpdateProfileDto) {
+    this.lastUpdateCall = { userId, dto };
+    return { id: userId, ...dto };
+  }
+
+  async deleteAccount(userId: string) {
+    return { success: true, userId };
+  }
+
+  async changePassword(userId: string, dto: { old_password: string; new_password: string }) {
+    return { success: true, userId, dto };
+  }
+
+  async getPublicProfile(username: string) {
+    return { username };
+  }
+
+  async getPublicMessages(username: string) {
+    return [{ id: 'm1', username }];
+  }
+}
+
 describe('UserController', () => {
   let controller: UserController;
-  let userService: UserService;
-
-  const mockUserService: any = {
-    getMe: jest.fn(),
-    updateProfile: jest.fn(),
-    deleteAccount: jest.fn(),
-    changePassword: jest.fn(),
-    getPublicProfile: jest.fn(),
-    getPublicMessages: jest.fn(),
-  };
+  let fixture: UserServiceFixture;
 
   beforeEach(async () => {
+    fixture = new UserServiceFixture();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
-        { provide: UserService, useValue: mockUserService },
+        { provide: UserService, useValue: fixture },
       ],
     })
       .overrideGuard(JwtAuthGuard)
@@ -30,22 +54,19 @@ describe('UserController', () => {
       .compile();
 
     controller = module.get<UserController>(UserController);
-    userService = module.get<UserService>(UserService);
   });
 
   describe('getMe', () => {
     it('should return user profile successfully using AAA', async () => {
       // Arrange
       const userId = 'user-1';
-      const mockProfile = { id: userId, username: 'samy' };
-      mockUserService.getMe.mockResolvedValue(mockProfile);
 
       // Act
       const result = await controller.getMe(userId);
 
       // Assert
-      expect(userService.getMe).toHaveBeenCalledWith(userId);
-      expect(result).toEqual(mockProfile);
+      expect(fixture.lastGetMeUserId).toBe(userId);
+      expect(result).toEqual({ id: userId, username: 'samy' });
     });
   });
 
@@ -54,13 +75,12 @@ describe('UserController', () => {
       // Arrange
       const userId = 'user-1';
       const dto: UpdateProfileDto = { firstName: 'Samy' };
-      mockUserService.updateProfile.mockResolvedValue({ id: userId, ...dto });
 
       // Act
       const result = await controller.updateProfile(userId, dto);
 
       // Assert
-      expect(userService.updateProfile).toHaveBeenCalledWith(userId, dto);
+      expect(fixture.lastUpdateCall).toEqual({ userId, dto });
       expect(result.firstName).toBe('Samy');
     });
   });

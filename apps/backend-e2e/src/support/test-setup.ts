@@ -1,9 +1,12 @@
 /* eslint-disable */
-import axios from 'axios';
+declare global {
+  // eslint-disable-next-line no-var
+  var __BACKEND_BASE_URL__: string | undefined;
+}
 
 module.exports = async function () {
-  // Configure axios for tests to use.
+  // Configure base URL for tests.
   const host = process.env.HOST ?? 'localhost';
   const port = process.env.PORT ?? '3000';
-  axios.defaults.baseURL = `http://${host}:${port}`;
+  globalThis.__BACKEND_BASE_URL__ = `http://${host}:${port}`;
 };

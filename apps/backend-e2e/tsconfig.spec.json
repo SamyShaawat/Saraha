@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
+    "outDir": "../../dist/out-tsc/apps/backend-e2e",
     "module": "commonjs",
     "types": ["jest", "node"]
   },

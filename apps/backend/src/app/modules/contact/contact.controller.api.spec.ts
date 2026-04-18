@@ -1,27 +1,33 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ContactController } from './contact.controller';
 import { ContactService } from './contact.service';
 import { ContactDto } from '@saraha/dto';
 
+class ContactServiceFixture {
+  public lastDto: ContactDto | null = null;
+
+  async handleContact(dto: ContactDto) {
+    this.lastDto = dto;
+    return { success: true };
+  }
+}
+
 describe('ContactController', () => {
   let controller: ContactController;
-  let service: ContactService;
-
-  const mockContactService: any = {
-    handleContact: jest.fn(),
-  };
+  let fixture: ContactServiceFixture;
 
   beforeEach(async () => {
+    fixture = new ContactServiceFixture();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ContactController],
       providers: [
-        { provide: ContactService, useValue: mockContactService },
+        { provide: ContactService, useValue: fixture },
       ],
     }).compile();
 
     controller = module.get<ContactController>(ContactController);
-    service = module.get<ContactService>(ContactService);
   });
 
   describe('handleContact', () => {
@@ -32,13 +38,12 @@ describe('ContactController', () => {
         email: 'samy@test.com', 
         message: 'Hello' 
       };
-      mockContactService.handleContact.mockResolvedValue({ success: true });
 
       // Act
       const result = await controller.handleContact(dto);
 
       // Assert
-      expect(service.handleContact).toHaveBeenCalledWith(dto);
+      expect(fixture.lastDto).toEqual(dto);
       expect(result.success).toBe(true);
     });
   });

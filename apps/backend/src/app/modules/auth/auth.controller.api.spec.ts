@@ -1,27 +1,75 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { CreateUserDto, LoginDto } from '@saraha/dto';
+import { CreateUserDto, LoginDto, FacebookAuthDto, GoogleAuthDto } from '@saraha/dto';
+
+class AuthServiceFixture {
+  public lastSignupDto: CreateUserDto | null = null;
+  public lastLoginDto: LoginDto | null = null;
+  public lastFacebookSignupToken: string | null = null;
+  public lastFacebookLoginToken: string | null = null;
+  public lastGoogleSignupToken: string | null = null;
+  public lastGoogleLoginToken: string | null = null;
+
+  public signupResult = {
+    id: 'user-1',
+    email: 'test@example.com',
+    username: 'tester',
+    firstName: 'Test',
+    lastName: 'User',
+  };
+
+  public loginResult = {
+    accessToken: 'jwt-token',
+    refreshToken: 'refresh-token',
+    user: { username: 'tester' },
+  };
+
+  async signup(dto: CreateUserDto) {
+    this.lastSignupDto = dto;
+    return this.signupResult;
+  }
+
+  async login(dto: LoginDto) {
+    this.lastLoginDto = dto;
+    return this.loginResult;
+  }
+
+  async facebookSignup(token: string) {
+    this.lastFacebookSignupToken = token;
+    return this.loginResult;
+  }
+
+  async facebookLogin(token: string) {
+    this.lastFacebookLoginToken = token;
+    return this.loginResult;
+  }
+
+  async googleSignup(token: string) {
+    this.lastGoogleSignupToken = token;
+    return this.loginResult;
+  }
+
+  async googleLogin(token: string) {
+    this.lastGoogleLoginToken = token;
+    return this.loginResult;
+  }
+}
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let authService: AuthService;
-
-  const mockAuthService: any = {
-    signup: jest.fn(),
-    login: jest.fn(),
-    facebookLogin: jest.fn(),
-  };
+  let fixture: AuthServiceFixture;
 
   beforeEach(async () => {
+    fixture = new AuthServiceFixture();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [{ provide: AuthService, useValue: mockAuthService }],
+      providers: [{ provide: AuthService, useValue: fixture }],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
   });
 
   describe('register/signup', () => {
@@ -34,15 +82,13 @@ describe('AuthController', () => {
         firstName: 'Test',
         lastName: 'User',
       };
-      const mockResult = { id: '1', ...dto };
-      mockAuthService.signup.mockResolvedValue(mockResult);
 
       // Act
       const result = await controller.register(dto);
 
       // Assert
-      expect(authService.signup).toHaveBeenCalledWith(dto);
-      expect(result).toEqual(mockResult);
+      expect(fixture.lastSignupDto).toEqual(dto);
+      expect(result).toEqual(fixture.signupResult);
     });
   });
 
@@ -53,15 +99,65 @@ describe('AuthController', () => {
         email_or_username: 'tester',
         password: 'password123',
       };
-      const mockTokens = { accessToken: 'jwt', user: { username: 'tester' } };
-      mockAuthService.login.mockResolvedValue(mockTokens);
 
       // Act
       const result = await controller.login(dto);
 
       // Assert
-      expect(authService.login).toHaveBeenCalledWith(dto);
-      expect(result).toEqual(mockTokens);
+      expect(fixture.lastLoginDto).toEqual(dto);
+      expect(result).toEqual(fixture.loginResult);
+    });
+  });
+
+  describe('facebook social auth', () => {
+    it('should signup with facebook token using AAA', async () => {
+      // Arrange
+      const dto: FacebookAuthDto = { access_token: 'fb-token' };
+
+      // Act
+      const result = await controller.facebookSignup(dto);
+
+      // Assert
+      expect(fixture.lastFacebookSignupToken).toBe('fb-token');
+      expect(result).toEqual(fixture.loginResult);
+    });
+
+    it('should login with facebook token using AAA', async () => {
+      // Arrange
+      const dto: FacebookAuthDto = { access_token: 'fb-token' };
+
+      // Act
+      const result = await controller.facebookLogin(dto);
+
+      // Assert
+      expect(fixture.lastFacebookLoginToken).toBe('fb-token');
+      expect(result).toEqual(fixture.loginResult);
+    });
+  });
+
+  describe('google social auth', () => {
+    it('should signup with google token using AAA', async () => {
+      // Arrange
+      const dto: GoogleAuthDto = { access_token: 'google-token' };
+
+      // Act
+      const result = await controller.googleSignup(dto);
+
+      // Assert
+      expect(fixture.lastGoogleSignupToken).toBe('google-token');
+      expect(result).toEqual(fixture.loginResult);
+    });
+
+    it('should login with google token using AAA', async () => {
+      // Arrange
+      const dto: GoogleAuthDto = { access_token: 'google-token' };
+
+      // Act
+      const result = await controller.googleLogin(dto);
+
+      // Assert
+      expect(fixture.lastGoogleLoginToken).toBe('google-token');
+      expect(result).toEqual(fixture.loginResult);
     });
   });
 });
