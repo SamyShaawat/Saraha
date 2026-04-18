@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 declare global {
   // eslint-disable-next-line no-var
   var __BACKEND_BASE_URL__: string | undefined;

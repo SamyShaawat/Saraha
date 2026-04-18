@@ -16,7 +16,7 @@ async function bootstrap() {
   // Input validation
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
 
-  const port = process.env['PORT'] ?? 3008;
+  const port = 3008;
   await app.listen(port);
 
   Logger.log(`🚀 Backend running on: http://localhost:${port}/api`, 'Bootstrap');

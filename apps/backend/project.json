@@ -10,7 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
-        "compiler": "swc",
+        "compiler": "tsc",
         "outputPath": "dist/apps/backend",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
