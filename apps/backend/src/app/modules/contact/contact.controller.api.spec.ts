@@ -8,7 +8,7 @@ describe('ContactController', () => {
   let controller: ContactController;
   let service: ContactService;
 
-  const mockContactService = {
+  const mockContactService: any = {
     handleContact: jest.fn(),
   };
 

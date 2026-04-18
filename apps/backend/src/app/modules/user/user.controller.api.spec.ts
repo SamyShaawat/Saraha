@@ -9,7 +9,7 @@ describe('UserController', () => {
   let controller: UserController;
   let userService: UserService;
 
-  const mockUserService = {
+  const mockUserService: any = {
     getMe: jest.fn(),
     updateProfile: jest.fn(),
     deleteAccount: jest.fn(),

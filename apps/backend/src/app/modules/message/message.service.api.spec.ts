@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessageService } from './message.service';
 import { PrismaService } from '@saraha/data-access';
@@ -8,7 +9,7 @@ describe('MessageService', () => {
   let service: MessageService;
   let prisma: PrismaService;
 
-  const mockPrismaService = {
+  const mockPrismaService: any = {
     user: {
       findUnique: jest.fn(),
     },

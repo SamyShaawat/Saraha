@@ -10,7 +10,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let prisma: PrismaService;
 
-  const mockPrismaService = {
+  const mockPrismaService: any = {
     user: {
       findUnique: jest.fn(),
       findFirst: jest.fn(),
@@ -53,9 +53,10 @@ describe('AuthService', () => {
 
     it('should throw ConflictException if username already exists', async () => {
       // Arrange
-      mockPrismaService.user.findUnique.mockImplementation(({ where }: { where: { username?: string; email?: string } }) => {
-        if (where.username === 'taken') return { id: 'ext' };
-        return null;
+      mockPrismaService.user.findUnique.mockImplementation((params: any) => {
+        const where = params.where;
+        if (where.username === 'taken') return Promise.resolve({ id: 'ext' });
+        return Promise.resolve(null);
       });
 
       // Act & Assert

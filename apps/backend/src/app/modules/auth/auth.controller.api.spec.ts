@@ -8,7 +8,7 @@ describe('AuthController', () => {
   let controller: AuthController;
   let authService: AuthService;
 
-  const mockAuthService = {
+  const mockAuthService: any = {
     signup: jest.fn(),
     login: jest.fn(),
     facebookLogin: jest.fn(),

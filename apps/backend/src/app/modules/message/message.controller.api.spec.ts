@@ -9,7 +9,7 @@ describe('MessageController', () => {
   let controller: MessageController;
   let service: MessageService;
 
-  const mockMessageService = {
+  const mockMessageService: any = {
     sendMessage: jest.fn(),
     getMessages: jest.fn(),
     toggleFavorite: jest.fn(),
