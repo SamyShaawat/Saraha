@@ -7,6 +7,6 @@ declare global {
 module.exports = async function () {
   // Configure base URL for tests.
   const host = process.env.HOST ?? 'localhost';
-  const port = process.env.PORT ?? '3000';
+  const port = process.env.PORT ?? '3008';
   globalThis.__BACKEND_BASE_URL__ = `http://${host}:${port}`;
 };
