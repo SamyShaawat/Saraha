@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import Navbar from '../../../components/Navbar';
+import PageShell from '../../../components/PageShell';
 import { useRedirectIfAuthenticated } from '../../shared/hooks/useRedirectIfAuthenticated';
 import { AuthCard } from '../components/AuthCard';
 import { AuthInput } from '../components/AuthInput';
@@ -84,19 +84,7 @@ export function RegistrationPage() {
   };
 
   return (
-    <div {...inspectProps('RegistrationPage')}>
-      <Navbar />
-      <div
-        {...inspectProps('RegistrationPage.Container')}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          padding: '2rem',
-          marginTop: '2rem',
-        }}
-      >
+    <PageShell pageName="RegistrationPage" contentName="RegistrationPage.Container" centered maxWidth="560px">
         <AuthCard
           title="Join the community"
           subtitle="Create your account in seconds"
@@ -106,7 +94,7 @@ export function RegistrationPage() {
           footerLinkTo="/login"
         >
           <form {...inspectProps('RegistrationPage.Form')} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
-            <div {...inspectProps('RegistrationPage.NameRow')} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div {...inspectProps('RegistrationPage.NameRow')} className="card-grid-2">
               <AuthInput
                 label="First Name"
                 name="firstName"
@@ -180,8 +168,7 @@ export function RegistrationPage() {
             </button>
           </form>
         </AuthCard>
-      </div>
-    </div>
+    </PageShell>
   );
 }
 

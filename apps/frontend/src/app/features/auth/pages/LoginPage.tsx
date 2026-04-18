@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import Navbar from '../../../components/Navbar';
+import PageShell from '../../../components/PageShell';
 import { useRedirectIfAuthenticated } from '../../shared/hooks/useRedirectIfAuthenticated';
 import { AuthCard } from '../components/AuthCard';
 import { AuthInput } from '../components/AuthInput';
@@ -83,18 +83,7 @@ export function LoginPage() {
   };
 
   return (
-    <div {...inspectProps('LoginPage')}>
-      <Navbar />
-      <div
-        {...inspectProps('LoginPage.Container')}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          padding: '2rem',
-        }}
-      >
+    <PageShell pageName="LoginPage" contentName="LoginPage.Container" centered maxWidth="520px">
         <AuthCard
           title="Welcome Back"
           subtitle="Login to check your messages"
@@ -157,8 +146,7 @@ export function LoginPage() {
             </button>
           </form>
         </AuthCard>
-      </div>
-    </div>
+    </PageShell>
   );
 }
 
