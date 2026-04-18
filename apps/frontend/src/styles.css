@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #6366f1;
@@ -109,4 +112,69 @@ ul {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(90deg, #818cf8, #c084fc);
+}
+
+:root {
+  --navbar-offset: 6.75rem;
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: var(--navbar-offset) 1rem 2rem;
+}
+
+.page-shell--centered {
+  display: flex;
+  align-items: center;
+}
+
+.page-shell__content {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.responsive-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sidebar-panel {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --navbar-offset: 8.5rem;
+  }
+
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --navbar-offset: 9.5rem;
+  }
+
+  .card-grid-2 {
+    grid-template-columns: 1fr;
+  }
 }

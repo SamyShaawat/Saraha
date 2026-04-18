@@ -10,6 +10,7 @@ import ContactPage from './features/static/pages/ContactPage';
 import PrivacyPage from './features/static/pages/PrivacyPage';
 import TermsPage from './features/static/pages/TermsPage';
 import { InspectPage } from './features/shared/components/InspectPage';
+import { InspectTool } from './features/shared/components/InspectTool';
 
 export function App() {
   return (
@@ -48,6 +49,7 @@ export function App() {
         <Route path="/privacy" element={<InspectPage name="PrivacyPage" route="/privacy"><PrivacyPage /></InspectPage>} />
         <Route path="/terms" element={<InspectPage name="TermsPage" route="/terms"><TermsPage /></InspectPage>} />
       </Routes>
+      <InspectTool />
     </BrowserRouter>
   );
 }
