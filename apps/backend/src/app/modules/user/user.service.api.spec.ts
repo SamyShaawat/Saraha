@@ -14,6 +14,7 @@ type UserFixture = {
   bio?: string;
   role: number;
   profilePicture?: string;
+  preferredLanguage?: string;
   password?: string;
   createdAt: Date;
 };
@@ -30,17 +31,42 @@ function createPrismaFixture(usersSeed: UserFixture[] = [], messagesSeed: Messag
   const users = [...usersSeed];
   const messages = [...messagesSeed];
 
+  const pickSelectedFields = <T extends object>(
+    record: T,
+    select?: Record<string, boolean>,
+  ) => {
+    if (!select) {
+      return record;
+    }
+
+    return Object.entries(select)
+      .filter(([, enabled]) => enabled)
+      .reduce<Record<string, unknown>>((acc, [key]) => {
+        acc[key] = record[key as keyof T];
+        return acc;
+      }, {});
+  };
+
   return {
     user: {
-      async findUnique(args: { where: { id?: string; username?: string } }) {
+      async findUnique(args: {
+        where: { id?: string; username?: string };
+        select?: Record<string, boolean>;
+      }) {
         const { id, username } = args.where;
-        return users.find((user) => user.id === id || user.username === username) ?? null;
+        const user =
+          users.find((item) => item.id === id || item.username === username) ?? null;
+        return user ? pickSelectedFields(user, args.select) : null;
       },
-      async update(args: { where: { id: string }; data: Partial<UserFixture> }) {
+      async update(args: {
+        where: { id: string };
+        data: Partial<UserFixture>;
+        select?: Record<string, boolean>;
+      }) {
         const idx = users.findIndex((user) => user.id === args.where.id);
         if (idx < 0) throw new Error('User not found');
         users[idx] = { ...users[idx], ...args.data };
-        return users[idx];
+        return pickSelectedFields(users[idx], args.select);
       },
       async delete(args: { where: { id: string } }) {
         const idx = users.findIndex((user) => user.id === args.where.id);
@@ -73,6 +99,7 @@ describe('UserService', () => {
         firstName: 'Samy',
         lastName: 'Shaawat',
         role: 0,
+        preferredLanguage: 'en',
         createdAt: new Date(),
       },
     ]);
@@ -126,6 +153,7 @@ describe('UserService', () => {
           firstName: 'Samy',
           lastName: 'Shaawat',
           role: 0,
+          preferredLanguage: 'en',
           password: hashedOld,
           createdAt: new Date(),
         },
@@ -156,6 +184,7 @@ describe('UserService', () => {
           firstName: 'Samy',
           lastName: 'Shaawat',
           role: 0,
+          preferredLanguage: 'en',
           password: hashedOld,
           createdAt: new Date(),
         },
@@ -173,6 +202,42 @@ describe('UserService', () => {
 
       // Assert
       await expect(action).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
+  describe('language preferences', () => {
+    it('should return preferred language when user exists using AAA', async () => {
+      // Arrange
+      const userId = 'u1';
+
+      // Act
+      const result = await service.getLanguagePreference(userId);
+
+      // Assert
+      expect(result).toEqual({ preferredLanguage: 'en' });
+    });
+
+    it('should update preferred language using AAA', async () => {
+      // Arrange
+      const userId = 'u1';
+      const nextLanguage = 'ar';
+
+      // Act
+      const result = await service.updateLanguagePreference(userId, nextLanguage);
+
+      // Assert
+      expect(result).toEqual({ preferredLanguage: 'ar' });
+    });
+
+    it('should throw NotFoundException when fetching language for missing user using AAA', async () => {
+      // Arrange
+      const missingUserId = 'ghost';
+
+      // Act
+      const action = service.getLanguagePreference(missingUserId);
+
+      // Assert
+      await expect(action).rejects.toThrow(NotFoundException);
     });
   });
 });

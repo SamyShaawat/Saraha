@@ -34,6 +34,14 @@ class UserServiceFixture {
   async getPublicMessages(username: string) {
     return [{ id: 'm1', username }];
   }
+
+  async getLanguagePreference(userId: string) {
+    return { preferredLanguage: userId === 'user-1' ? 'en' : 'ar' };
+  }
+
+  async updateLanguagePreference(userId: string, language: 'en' | 'ar') {
+    return { preferredLanguage: language, userId };
+  }
 }
 
 describe('UserController', () => {
@@ -82,6 +90,31 @@ describe('UserController', () => {
       // Assert
       expect(fixture.lastUpdateCall).toEqual({ userId, dto });
       expect(result.firstName).toBe('Samy');
+    });
+  });
+
+  describe('language preferences', () => {
+    it('should return language preference using AAA', async () => {
+      // Arrange
+      const userId = 'user-1';
+
+      // Act
+      const result = await controller.getLanguagePreference(userId);
+
+      // Assert
+      expect(result).toEqual({ preferredLanguage: 'en' });
+    });
+
+    it('should update language preference using AAA', async () => {
+      // Arrange
+      const userId = 'user-1';
+      const dto = { language: 'ar' as const };
+
+      // Act
+      const result = await controller.updateLanguagePreference(userId, dto);
+
+      // Assert
+      expect(result).toEqual({ preferredLanguage: 'ar', userId });
     });
   });
 });

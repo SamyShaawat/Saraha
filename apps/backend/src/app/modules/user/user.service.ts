@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '@saraha/data-access';
-import { UpdateProfileDto, ChangePasswordDto } from '@saraha/dto';
+import {
+  UpdateProfileDto,
+  ChangePasswordDto,
+  SupportedLanguage,
+} from '@saraha/dto';
 import * as argon2 from 'argon2';
 
 @Injectable()
@@ -19,6 +23,7 @@ export class UserService {
         bio: true,
         role: true,
         profilePicture: true,
+        preferredLanguage: true,
         createdAt: true,
       },
     });
@@ -95,6 +100,27 @@ export class UserService {
         content: true,
         createdAt: true,
       },
+    });
+  }
+
+  async getLanguagePreference(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { preferredLanguage: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async updateLanguagePreference(userId: string, language: SupportedLanguage) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { preferredLanguage: language },
+      select: { preferredLanguage: true },
     });
   }
 }

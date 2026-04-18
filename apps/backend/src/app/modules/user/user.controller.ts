@@ -2,7 +2,11 @@ import { Controller, Get, Put, Delete, Body, Param, UseGuards } from '@nestjs/co
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { GetUser } from '../../common/decorators/user.decorator';
-import { UpdateProfileDto, ChangePasswordDto } from '@saraha/dto';
+import {
+  UpdateProfileDto,
+  ChangePasswordDto,
+  UpdatePreferredLanguageDto,
+} from '@saraha/dto';
 
 @Controller('users')
 export class UserController {
@@ -34,6 +38,23 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   deleteAccount(@GetUser('sub') userId: string) {
     return this.userService.deleteAccount(userId);
+  }
+
+  /** GET /api/users/me/language (Protected) */
+  @Get('me/language')
+  @UseGuards(JwtAuthGuard)
+  getLanguagePreference(@GetUser('sub') userId: string) {
+    return this.userService.getLanguagePreference(userId);
+  }
+
+  /** PUT /api/users/me/language (Protected) */
+  @Put('me/language')
+  @UseGuards(JwtAuthGuard)
+  updateLanguagePreference(
+    @GetUser('sub') userId: string,
+    @Body() dto: UpdatePreferredLanguageDto,
+  ) {
+    return this.userService.updateLanguagePreference(userId, dto.language);
   }
 
   /** GET /api/users/:username/profile (Public) */
