@@ -22,11 +22,15 @@ export function Navbar() {
       top: 0,
       left: 0,
       right: 0,
+      boxSizing: 'border-box',
+      width: '100%',
       zIndex: 50,
       borderBottom: '1px solid var(--glass-border)',
       background: 'rgba(15, 23, 42, 0.7)',
       backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)'
+      WebkitBackdropFilter: 'blur(12px)',
+      gap: '0.75rem',
+      flexWrap: 'wrap',
     }}
     >
       <div {...inspectProps('Navbar.Brand')} style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
@@ -35,7 +39,10 @@ export function Navbar() {
         </Link>
       </div>
       
-      <ul {...inspectProps('Navbar.Actions')} style={{ display: 'flex', gap: '2rem', alignItems: 'center', margin: 0, padding: 0 }}>
+      <ul
+        {...inspectProps('Navbar.Actions')}
+        style={{ display: 'flex', gap: '1rem', alignItems: 'center', margin: 0, padding: 0, listStyle: 'none', flexWrap: 'wrap', justifyContent: 'flex-end' }}
+      >
         <li>
           <Link {...inspectProps('Navbar.ContactLink', { to: '/contact' })} to="/contact" style={{ fontWeight: 500, color: 'var(--text-main)', transition: 'color 0.2s', textDecoration: 'none' }}>Contact Us</Link>
         </li>

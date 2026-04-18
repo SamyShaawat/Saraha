@@ -17,6 +17,7 @@ export function LoginPage() {
     email_or_username: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -118,6 +119,9 @@ export function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
+              canTogglePassword
+              passwordVisible={showPassword}
+              onTogglePasswordVisibility={() => setShowPassword((prev) => !prev)}
             />
 
             <div {...inspectProps('LoginPage.ForgotContainer')} style={{ textAlign: 'right' }}>

@@ -20,6 +20,7 @@ export function RegistrationPage() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -147,6 +148,9 @@ export function RegistrationPage() {
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
+              canTogglePassword
+              passwordVisible={showPassword}
+              onTogglePasswordVisibility={() => setShowPassword((prev) => !prev)}
             />
 
             <button {...inspectProps('RegistrationPage.SubmitButton')} type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '1rem' }}>
